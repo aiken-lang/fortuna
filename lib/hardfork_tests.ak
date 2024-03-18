@@ -53,3 +53,7 @@ test check_block_signal_4() {
 test check_block_signal_5() {
   check_block_signal(0, 1000, 10, 11)
 }
+
+test check_block_signal_6() {
+  check_block_signal(1001, 1000, 10, 10)
+}

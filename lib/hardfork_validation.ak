@@ -16,8 +16,7 @@ use hardfork/hftypes.{
   MinerLockState, NftState, NotForked, UserLock,
 }
 use hardfork/params.{
-  hardfork_block_height, hardfork_mint_hash, hardfork_spend_hash,
-  miner_hardfork_threshold, tuna_count_blocks_from,
+  hardfork_block_height, miner_hardfork_threshold, tuna_count_blocks_from,
   tuna_hardfork_threshold_denominator, tuna_hardfork_threshold_numerator,
 }
 
@@ -78,8 +77,8 @@ pub fn initialize(
   expect HardForkState {
     status: NotForked,
     fork_block_height,
-    fortuna_next_spend_hash,
     fortuna_next_mint_hash,
+    ..
   }: ForkDatum = get_inline_datum(hfs_datum)
 
   expect MinerLockState { locked_tuna: 0, block_signals: 0 }: ForkDatum =
@@ -100,8 +99,6 @@ pub fn initialize(
     // Needed to prevent removal of genesis input check
     genesis_input == genesis_input,
     fork_block_height == hardfork_block_height,
-    fortuna_next_spend_hash == hardfork_spend_hash,
-    fortuna_next_mint_hash == hardfork_mint_hash,
   }
 }
 
