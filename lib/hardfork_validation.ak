@@ -27,6 +27,7 @@ pub const lock_state_token: ByteArray = "lock_state"
 
 pub const hard_fork_state_token: ByteArray = "hfs"
 
+/// Check for the proper initialization of the hard fork state
 pub fn initialize(
   // Input
   initializer_input: OutputReference,
@@ -92,6 +93,8 @@ pub fn initialize(
     own_address == miner_state_address,
     own_address == lock_state_address,
     quantity_of(hfs_value, own_policy, hard_fork_state_token) == 1,
+    // Ensure new reigning lord tuna is properly locked away
+    quantity_of(hfs_value, fortuna_next_mint_hash, fortuna.master_token_name) == 1,
     quantity_of(miner_state_value, own_policy, miner_lock_state_token) == 1,
     quantity_of(lock_state_value, own_policy, lock_state_token) == 1,
     // Needed to prevent removal of genesis input check
@@ -217,15 +220,15 @@ pub fn lock_not_forked(
         out_nft_key == own_token_name,
         address == own_address,
         is_a_valid_miner(
-          fork_block_height,
-          fortuna_v1_hash,
-          own_address,
-          own_policy,
-          lock_state_input,
-          outputs,
-          lock_output_index,
-          fortuna_v1_output,
-          user_locked_tuna,
+          fbh: fork_block_height,
+          fv1h: fortuna_v1_hash,
+          oa: own_address,
+          op: own_policy,
+          mli: lock_state_input,
+          os: outputs,
+          loi: lock_output_index,
+          fvoi: fortuna_v1_output,
+          ult: user_locked_tuna,
         ),
       }
 
@@ -234,27 +237,27 @@ pub fn lock_not_forked(
         out_nft_key == own_token_name,
         address == own_address,
         is_a_valid_locker(
-          own_address,
-          own_policy,
-          lock_state_input,
-          outputs,
-          lock_output_index,
-          user_locked_tuna,
+          oa: own_address,
+          op: own_policy,
+          li: lock_state_input,
+          os: outputs,
+          loi: lock_output_index,
+          ult: user_locked_tuna,
         ),
       }
   }
 }
 
 fn is_a_valid_miner(
-  fork_block_height: Int,
-  fortuna_v1_hash: ByteArray,
-  own_address: Address,
-  own_policy: ByteArray,
-  miner_lock_input: Output,
-  outputs: List<Output>,
-  lock_output_index: Int,
-  fortuna_v1_output_index: Int,
-  user_locked_tuna: Int,
+  fbh fork_block_height: Int,
+  fv1h fortuna_v1_hash: ByteArray,
+  oa own_address: Address,
+  op own_policy: ByteArray,
+  mli miner_lock_input: Output,
+  os outputs: List<Output>,
+  loi lock_output_index: Int,
+  fvoi fortuna_v1_output_index: Int,
+  ult user_locked_tuna: Int,
 ) -> Bool {
   let Output { value: miner_lock_value, datum: miner_lock_datum, .. } =
     miner_lock_input
@@ -307,12 +310,12 @@ fn is_a_valid_miner(
 }
 
 fn is_a_valid_locker(
-  own_address: Address,
-  own_policy: ByteArray,
-  lock_input: Output,
-  outputs: List<Output>,
-  lock_output_index: Int,
-  user_locked_tuna: Int,
+  oa own_address: Address,
+  op own_policy: ByteArray,
+  li lock_input: Output,
+  os outputs: List<Output>,
+  loi lock_output_index: Int,
+  ult user_locked_tuna: Int,
 ) -> Bool {
   let Output { value: lock_value, datum: lock_datum, .. } = lock_input
 
@@ -584,17 +587,17 @@ pub fn burn_forked(
 }
 
 pub fn hard_fork(
-  fortuna_v1_hash: ByteArray,
-  hard_fork_state_input: OutputReference,
-  hardfork_output_index: Int,
-  lock_output_index: Int,
-  nft_output_index: Int,
-  ownership_key_index: Option<Int>,
-  v2_miner_output: Int,
-  lock_action: LockAction,
-  transaction: Transaction,
-  own_policy: ByteArray,
-  ref_locked_tuna: Int,
+  fv1h fortuna_v1_hash: ByteArray,
+  hfsi hard_fork_state_input: OutputReference,
+  hoi hardfork_output_index: Int,
+  loi lock_output_index: Int,
+  noi nft_output_index: Int,
+  oki ownership_key_index: Option<Int>,
+  vmo v2_miner_output: Int,
+  la lock_action: LockAction,
+  tx transaction: Transaction,
+  op own_policy: ByteArray,
+  rlt ref_locked_tuna: Int,
 ) -> Bool {
   let Transaction { inputs, outputs, mint, .. } = transaction
 
@@ -731,123 +734,109 @@ pub fn hard_fork(
 
   let nft_key, miner_lock_input, miner_locked_tuna, hardfork_datum <- callback
 
-  when lock_action is {
-    MinerLock { fortuna_v1_output } -> {
-      let Output { value: miner_lock_value, datum: miner_lock_datum, .. } =
-        miner_lock_input
+  expect MinerLock { fortuna_v1_output } = lock_action
 
-      expect MinerLockState { locked_tuna, block_signals }: ForkDatum =
-        get_inline_datum(miner_lock_datum)
+  let Output { value: miner_lock_value, datum: miner_lock_datum, .. } =
+    miner_lock_input
 
-      expect HardForkState {
-        status: NotForked,
-        fork_block_height,
-        fortuna_next_spend_hash,
-        fortuna_next_mint_hash,
-      }: ForkDatum = hardfork_datum
+  expect MinerLockState { locked_tuna, block_signals }: ForkDatum =
+    get_inline_datum(miner_lock_datum)
 
-      let total_emitted = calculate_emission(fork_block_height)
+  expect HardForkState {
+    status: NotForked,
+    fork_block_height,
+    fortuna_next_spend_hash,
+    fortuna_next_mint_hash,
+  }: ForkDatum = hardfork_datum
 
-      // Handle getting output states
-      let fortuna_v1_output = list_at(outputs, fortuna_v1_output)
+  let total_emitted = calculate_emission(fork_block_height)
 
-      let Output { value: fortuna_v1_value, datum: fortuna_v1_datum, .. } =
-        fortuna_v1_output
+  // Handle getting output states
+  let fortuna_v1_output = list_at(outputs, fortuna_v1_output)
 
-      expect State { block_number, .. }: State =
-        get_inline_datum(fortuna_v1_datum)
+  let Output { value: fortuna_v1_value, datum: fortuna_v1_datum, .. } =
+    fortuna_v1_output
 
-      let miner_lock_output = list_at(outputs, lock_output_index)
+  expect State { block_number, .. }: State = get_inline_datum(fortuna_v1_datum)
 
-      let Output {
-        address,
-        value: out_miner_lock_value,
-        datum: out_miner_lock_datum,
-        ..
-      } = miner_lock_output
+  let miner_lock_output = list_at(outputs, lock_output_index)
 
-      expect address == own_address
+  let Output {
+    address,
+    value: out_miner_lock_value,
+    datum: out_miner_lock_datum,
+    ..
+  } = miner_lock_output
 
-      expect MinerLockState {
-        locked_tuna: out_locked_tuna,
-        block_signals: out_block_signals,
-      }: ForkDatum = get_inline_datum(out_miner_lock_datum)
+  expect address == own_address
 
-      let hfs_output = list_at(outputs, hardfork_output_index)
+  expect MinerLockState {
+    locked_tuna: out_locked_tuna,
+    block_signals: out_block_signals,
+  }: ForkDatum = get_inline_datum(out_miner_lock_datum)
 
-      let Output { address, value: out_hfs_value, datum: out_hfs_datum, .. } =
-        hfs_output
+  let hfs_output = list_at(outputs, hardfork_output_index)
 
-      expect address == own_address
+  let Output { address, value: out_hfs_value, datum: out_hfs_datum, .. } =
+    hfs_output
 
-      expect HardForkState {
-        status: Forked,
-        fork_block_height: out_fork_block_height,
-        fortuna_next_spend_hash: out_fortuna_next_spend_hash,
-        fortuna_next_mint_hash: out_fortuna_next_mint_hash,
-      }: ForkDatum = get_inline_datum(out_hfs_datum)
+  expect address == own_address
 
-      let fortuna_v2 = list_at(outputs, v2_miner_output)
+  expect HardForkState {
+    status: Forked,
+    fork_block_height: out_fork_block_height,
+    fortuna_next_spend_hash: out_fortuna_next_spend_hash,
+    fortuna_next_mint_hash: out_fortuna_next_mint_hash,
+  }: ForkDatum = get_inline_datum(out_hfs_datum)
 
-      let Output {
-        address,
-        value: fortuna_v2_value,
-        datum: fortuna_v2_datum,
-        ..
-      } = fortuna_v2
+  let fortuna_v2 = list_at(outputs, v2_miner_output)
 
-      expect
-        address == Address {
-          payment_credential: ScriptCredential(fortuna_next_spend_hash),
-          stake_credential: None,
-        }
+  let Output { address, value: fortuna_v2_value, datum: fortuna_v2_datum, .. } =
+    fortuna_v2
 
-      and {
-        // Miner mined a valid fortuna v1 block
-        quantity_of(
-          fortuna_v1_value,
-          fortuna_v1_hash,
-          fortuna.master_token_name,
-        ) == 1,
-        // Hard fork state is run at correct block number
-        fork_block_height == block_number,
-        // Fortuna v2 Output state is correct
-        fortuna_v2_datum == fortuna_v1_datum,
-        // Fortuna v2 Output value is correct
-        utils.value_has_nft_and_lovelace(
-          fortuna_v2_value,
-          fortuna_next_mint_hash,
-          fortuna.master_token_name,
-        ),
-        // nft key at output datum has same token name as nft key
-        nft_key == out_nft_key,
-        // Miner locked at least some tuna
-        miner_locked_tuna > 0,
-        // Miner lock state is updated correctly
-        out_locked_tuna == miner_locked_tuna + locked_tuna,
-        out_block_signals == block_signals + 1,
-        // Thresholds are met
-        out_block_signals >= miner_hardfork_threshold,
-        out_locked_tuna + ref_locked_tuna >= total_emitted * tuna_hardfork_threshold_numerator / tuna_hardfork_threshold_denominator,
-        // Miner lock value is correct
-        value.without_lovelace(out_miner_lock_value) == value.without_lovelace(
-          miner_lock_value,
-        ),
-        quantity_of(out_miner_lock_value, own_policy, miner_lock_state_token) == 1,
-        // Hard fork state is updated correctly
-        out_fork_block_height == fork_block_height,
-        out_fortuna_next_spend_hash == fortuna_next_spend_hash,
-        out_fortuna_next_mint_hash == fortuna_next_mint_hash,
-        utils.value_has_nft_and_lovelace(
-          out_hfs_value,
-          own_policy,
-          hard_fork_state_token,
-        ),
-      }
+  expect
+    address == Address {
+      payment_credential: ScriptCredential(fortuna_next_spend_hash),
+      stake_credential: None,
     }
 
-    // Handle getting input state
-    _ -> False
+  and {
+    // Miner mined a valid fortuna v1 block
+    quantity_of(fortuna_v1_value, fortuna_v1_hash, fortuna.master_token_name) == 1,
+    // Hard fork state is run at correct block number
+    fork_block_height == block_number,
+    // Fortuna v2 Output state is correct
+    fortuna_v2_datum == fortuna_v1_datum,
+    // Fortuna v2 Output value is correct
+    utils.value_has_nft_and_lovelace(
+      fortuna_v2_value,
+      fortuna_next_mint_hash,
+      fortuna.master_token_name,
+    ),
+    // nft key at output datum has same token name as nft key
+    nft_key == out_nft_key,
+    // Miner locked at least some tuna
+    miner_locked_tuna > 0,
+    // Miner lock state is updated correctly
+    out_locked_tuna == miner_locked_tuna + locked_tuna,
+    out_block_signals == block_signals + 1,
+    // Thresholds are met
+    out_block_signals >= miner_hardfork_threshold,
+    out_locked_tuna + ref_locked_tuna >= total_emitted * tuna_hardfork_threshold_numerator / tuna_hardfork_threshold_denominator,
+    // Miner lock value is correct
+    value.without_lovelace(out_miner_lock_value) == value.without_lovelace(
+      miner_lock_value,
+    ),
+    quantity_of(out_miner_lock_value, own_policy, miner_lock_state_token) == 1,
+    // Hard fork state is updated correctly
+    out_fork_block_height == fork_block_height,
+    out_fortuna_next_spend_hash == fortuna_next_spend_hash,
+    out_fortuna_next_mint_hash == fortuna_next_mint_hash,
+    utils.value_has_nft_and_lovelace(
+      out_hfs_value,
+      own_policy,
+      hard_fork_state_token,
+    ),
   }
 }
 

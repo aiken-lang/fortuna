@@ -3,7 +3,7 @@ use aiken/list
 use aiken/transaction.{InlineDatum,
   OutputReference, ScriptContext, Transaction} as tx
 use aiken/transaction/credential.{Inline, ScriptCredential}
-use fortuna/utils.{quantity_of}
+use fortuna/utils.{get_inline_datum, quantity_of}
 use hardfork/hftypes.{
   ForkDatum, Forked, HardForkState, LockAction, LockState, MinerLockState,
   NotForked,
@@ -180,26 +180,24 @@ validator(init_utxo_ref: OutputReference, fortuna_v1_hash: ByteArray) {
                 },
               )
 
-            expect InlineDatum(locked_state_datum) =
-              locked_state_input.output.datum
-
             expect LockState { locked_tuna: user_locked_tuna }: ForkDatum =
-              locked_state_datum
+              get_inline_datum(locked_state_input.output.datum)
 
             hfv.hard_fork(
-              fortuna_v1_hash,
-              hardfork_state_input,
-              hardfork_output_index,
-              lock_output_index,
-              nft_output_index,
-              ownership_key_index,
-              v2_miner_output,
-              lock_action,
-              transaction,
-              own_policy,
-              user_locked_tuna,
+              fv1h: fortuna_v1_hash,
+              hfsi: hardfork_state_input,
+              hoi: hardfork_output_index,
+              noi: nft_output_index,
+              loi: lock_output_index,
+              oki: ownership_key_index,
+              vmo: v2_miner_output,
+              la: lock_action,
+              tx: transaction,
+              op: own_policy,
+              rlt: user_locked_tuna,
             )
           }
+
           FailForkAttempt { fortuna_v1_output } ->
             hfv.failed_fork(
               fortuna_v1_hash,
