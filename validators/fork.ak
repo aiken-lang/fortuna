@@ -4,11 +4,11 @@ use aiken/transaction.{InlineDatum,
   OutputReference, ScriptContext, Transaction} as tx
 use aiken/transaction/credential.{Inline, ScriptCredential}
 use fortuna/utils.{get_inline_datum, quantity_of}
+use hardfork as hf
 use hardfork/hftypes.{
   ForkDatum, Forked, HardForkState, LockAction, LockState, MinerLockState,
   NotForked,
 }
-use hardfork as hf
 
 type NftForkAction {
   /// Only run once to initialize the nft tokens
