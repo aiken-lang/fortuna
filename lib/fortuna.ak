@@ -1,5 +1,6 @@
 use aiken/builtin
 use aiken/dict
+use aiken/fuzz.{bytearray}
 use aiken/transaction/value.{PolicyId, Value, tokens}
 use fortuna/parameters.{epoch_target, padding}
 
@@ -61,6 +62,39 @@ test format_found_bytearray_7() {
   format_found_bytearray(#"00000000000000000000001000") == (4096, 22)
 }
 
+test format_found_bytearray_8(bytes via bytearray()) {
+  let (_, leading_zeros) = format_found_bytearray(bytes)
+
+  let bytearray_position = leading_zeros / 2
+
+  builtin.index_bytearray(bytes, bytearray_position) != 0
+}
+
+test format_found_bytearray_9(bytes via bytearray()) {
+  let (difficulty_number, leading_zeros) = format_found_bytearray(bytes)
+
+  let bytearray_position = leading_zeros / 2
+
+  let bytearray_offset =
+    if leading_zeros % 2 == 0 {
+      2
+    } else {
+      3
+    }
+
+  let bytes_sliced =
+    builtin.slice_bytearray(bytearray_position, bytearray_offset, bytes)
+
+  let bytes_as_number =
+    if leading_zeros % 2 == 0 {
+      builtin.bytearray_to_integer(True, bytes_sliced)
+    } else {
+      builtin.bytearray_to_integer(True, bytes_sliced) / 16
+    }
+
+  difficulty_number == bytes_as_number
+}
+
 fn find_first_nonzero_byte(bytes: ByteArray, current_index: Int) -> Int {
   let current_byte = builtin.index_bytearray(bytes, current_index)
 
@@ -102,11 +136,15 @@ pub fn value_has_only_master_and_lovelace(
     // Should always reach here since maps come in ordered on chain
     expect [(token_name, quantity)] = amount2 |> dict.to_list()
 
-    policy2 == own_policy && quantity == 1 && token_name == master_token_name
+    policy2 == own_policy && (
+      quantity == 1 && token_name == master_token_name
+    )
   } else {
     expect [(token_name, quantity)] = amount1 |> dict.to_list()
 
-    policy1 == own_policy && quantity == 1 && token_name == master_token_name
+    policy1 == own_policy && (
+      quantity == 1 && token_name == master_token_name
+    )
   }
 }
 

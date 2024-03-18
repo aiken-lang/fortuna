@@ -1,4 +1,4 @@
-use hardfork_validation.{calculate_emission, check_block_signal}
+use hardfork.{calculate_emission, check_block_signal}
 
 test calculate_emission_1() {
   calculate_emission(3000) == 15000000000000
@@ -54,6 +54,8 @@ test check_block_signal_5() {
   check_block_signal(0, 1000, 10, 11)
 }
 
+/// Technically increase can happen after hardfork block height, 
+/// but since hardfork must occur at the blockheight this doesnt matter
 test check_block_signal_6() {
-  check_block_signal(1001, 1000, 10, 10)
+  check_block_signal(1001, 1000, 10, 11)
 }

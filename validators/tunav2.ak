@@ -15,8 +15,8 @@ use fortuna/types.{ExtraState, MineState, Statev2}
 use fortuna/utils.{
   get_inline_datum, list_at, quantity_of, resolve_output_reference,
 }
+use hardfork.{hard_fork_state_token}
 use hardfork/hftypes.{ForkDatum, NftState}
-use hardfork_validation.{hard_fork_state_token}
 
 type TunaAction {
   Genesis

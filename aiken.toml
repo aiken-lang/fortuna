@@ -10,5 +10,10 @@ platform = 'github'
 
 [[dependencies]]
 name = 'aiken-lang/stdlib'
-version = '1.7.0'
+version = 'main'
+source = 'github'
+
+[[dependencies]]
+name = 'aiken-lang/fuzz'
+version = 'main'
 source = 'github'
