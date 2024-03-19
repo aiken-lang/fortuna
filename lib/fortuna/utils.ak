@@ -64,7 +64,7 @@ pub fn value_has_nft_and_lovelace(
 ) -> Bool {
   expect [(policy1, amount1), (policy2, amount2)] =
     val
-      |> value.to_dict
+      |> value.to_dict()
       |> dict.to_list()
 
   if policy1 == value.ada_policy_id {
