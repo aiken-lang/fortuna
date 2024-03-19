@@ -119,8 +119,8 @@ pub fn get_new_difficulty(
   let new_difficulty = new_padded_difficulty / padding
 
   if new_padded_difficulty / 65536 == 0 {
-    if current_leading_zeros >= 62 {
-      (4096, 62)
+    if current_leading_zeros >= 60 {
+      (4096, 60)
     } else {
       (new_padded_difficulty, current_leading_zeros + 1)
     }
@@ -246,4 +246,3 @@ fn do_calculate_interlink(
     interlink
   }
 }
-

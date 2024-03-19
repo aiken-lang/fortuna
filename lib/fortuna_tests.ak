@@ -1,14 +1,105 @@
 use aiken/builtin
 use aiken/bytearray
 use aiken/cbor
-use aiken/fuzz.{and_then, bytearray_between, int_at_least, int_between, map}
-use aiken/hash.{blake2b_256}
+use aiken/fuzz.{
+  and_then, bytearray_between, int_at_least, int_between, label, map,
+}
+use aiken/math
 use aiken/math/rational
+use aiken/string
 use fortuna.{
   calculate_interlink, format_found_bytearray, get_difficulty_adjustment,
   get_new_difficulty,
 }
 use fortuna/parameters.{epoch_target}
+
+fn bytearray_append_zero(bytes, zeros) -> ByteArray {
+  if zeros == 0 {
+    bytes
+  } else {
+    bytearray_append_zero(builtin.append_bytearray(#"00", bytes), zeros - 1)
+  }
+}
+
+fn bytearray_append_filler_byte(bytes, odd) -> ByteArray {
+  if odd {
+    builtin.append_bytearray(#"0e", bytes)
+  } else {
+    builtin.append_bytearray(#"00", bytes)
+  }
+}
+
+fn epoch_number() -> Fuzzer<Int> {
+  int_between(epoch_target / 4, epoch_target * 4)
+}
+
+fn epoch_numb_boundary() -> Fuzzer<(Int, Int)> {
+  let lower = epoch_target / 4
+  let upper = epoch_target * 4
+
+  let first_int <- and_then(int_between(0, lower))
+
+  let second_int <- map(int_at_least(upper))
+
+  (first_int, second_int)
+}
+
+fn difficulty_level() -> Fuzzer<(Int, Int)> {
+  let difficulty_number <- and_then(int_between(4096, 65535))
+
+  let leading_zeros <- map(int_between(2, 59))
+
+  (difficulty_number, leading_zeros)
+}
+
+fn difficulty_adjustment_fuzz() -> Fuzzer<(Int, Int, Int, Int)> {
+  let numerator <- and_then(int_between(1, epoch_target * 4))
+
+  let denominator_lower =
+    if numerator / 4 == 0 {
+      1
+    } else {
+      numerator / 4
+    }
+
+  let denominator <- and_then(int_between(denominator_lower, numerator * 4))
+
+  let (difficulty_number, leading_zeros) <- map(difficulty_level())
+
+  (difficulty_number, leading_zeros, numerator, denominator)
+}
+
+fn get_bytes_and_difficulty() -> Fuzzer<(ByteArray, Int, Int)> {
+  let (difficulty_number, leading_zeros) <- and_then(difficulty_level())
+
+  let bytearray_size = ( 64 - leading_zeros ) / 2
+
+  let bytes <- map(bytearray_between(bytearray_size, bytearray_size))
+
+  let bytes = bytearray_append_filler_byte(bytes, leading_zeros % 2 == 0)
+
+  let bytes = bytearray_append_zero(bytes, 32 - bytearray_size - 1)
+
+  (bytes, difficulty_number, leading_zeros)
+}
+
+fn interlink_create(
+  bytes: ByteArray,
+  difficulty: Int,
+  bytes_as_int: Int,
+  current_list: List<Data>,
+) -> List<Data> {
+  let thing: Data = bytes
+
+  if bytes_as_int < difficulty / 2 {
+    [
+      thing,
+      ..interlink_create(bytes, difficulty / 2, bytes_as_int, current_list)
+    ]
+  } else {
+    current_list
+  }
+}
 
 test format_found_bytearray_1() {
   format_found_bytearray(#"00000000000000ffdd00000000") == (65501, 14)
@@ -38,21 +129,9 @@ test format_found_bytearray_7() {
   format_found_bytearray(#"00000000000000000000001000") == (4096, 22)
 }
 
-fn better_bytearray() -> Fuzzer<ByteArray> {
-  let bytes <- map(bytearray_between(72, 72))
+test format_found_bytearray_8(random_input via get_bytes_and_difficulty()) {
+  let (bytes, _, _) = random_input
 
-  blake2b_256(bytes)
-}
-
-fn bytearray_append_zero(bytes, zeros) -> ByteArray {
-  if zeros == 0 {
-    bytes
-  } else {
-    bytearray_append_zero(builtin.append_bytearray(#"00", bytes), zeros - 1)
-  }
-}
-
-test format_found_bytearray_8(bytes via better_bytearray()) {
   let (_, leading_zeros) = format_found_bytearray(bytes)
 
   let bytearray_position = leading_zeros / 2
@@ -60,7 +139,9 @@ test format_found_bytearray_8(bytes via better_bytearray()) {
   builtin.index_bytearray(bytes, bytearray_position) != 0
 }
 
-test format_found_bytearray_9(bytes via better_bytearray()) {
+test format_found_bytearray_9(random_input via get_bytes_and_difficulty()) {
+  let (bytes, _, _) = random_input
+
   let (difficulty_number, leading_zeros) = format_found_bytearray(bytes)
 
   let bytearray_position = leading_zeros / 2
@@ -99,58 +180,6 @@ test get_difficulty_adjustment_3() {
 
 test get_difficulty_adjustment_4() {
   get_difficulty_adjustment(200_000_000) == (1, 4)
-}
-
-fn epoch_number() -> Fuzzer<Int> {
-  int_between(epoch_target / 4, epoch_target * 4)
-}
-
-fn epoch_numb_boundary() -> Fuzzer<(Int, Int)> {
-  let lower = epoch_target / 4
-  let upper = epoch_target * 4
-
-  let first_int <- and_then(int_between(0, lower))
-
-  let second_int <- map(int_at_least(upper))
-
-  (first_int, second_int)
-}
-
-fn difficulty_level() -> Fuzzer<(Int, Int)> {
-  let difficulty_number <- and_then(int_between(4096, 65535))
-
-  let leading_zeros <- map(int_between(2, 62))
-
-  (difficulty_number, leading_zeros)
-}
-
-fn difficulty_adjustment_fuzz() -> Fuzzer<(Int, Int, Int, Int)> {
-  let numerator <- and_then(int_between(1, epoch_target * 4))
-
-  let denominator_lower =
-    if numerator / 4 == 0 {
-      1
-    } else {
-      numerator / 4
-    }
-
-  let denominator <- and_then(int_between(denominator_lower, numerator * 4))
-
-  let (difficulty_number, leading_zeros) <- map(difficulty_level())
-
-  (difficulty_number, leading_zeros, numerator, denominator)
-}
-
-fn get_bytes() -> Fuzzer<(ByteArray, Int, Int)> {
-  let (difficulty_number, leading_zeros) <- and_then(difficulty_level())
-
-  let bytearray_size = ( 64 - leading_zeros ) / 2
-
-  let bytes <- map(bytearray_between(bytearray_size, bytearray_size))
-
-  let bytes = bytearray_append_zero(bytes, 32 - bytearray_size)
-
-  (bytes, difficulty_number, leading_zeros)
 }
 
 test get_difficulty_adjustment_5(i via epoch_number()) {
@@ -205,7 +234,7 @@ test get_new_difficulty_6() {
 }
 
 test get_new_difficulty_7() {
-  get_new_difficulty(9000, 62, 1, 3) == (4096, 62)
+  get_new_difficulty(9000, 60, 1, 3) == (4096, 60)
 }
 
 test get_new_difficulty_8() {
@@ -218,14 +247,10 @@ test get_new_difficulty_9(i via difficulty_adjustment_fuzz()) {
   let (new_difficulty, new_leading_zeros) =
     get_new_difficulty(difficulty_number, leading_zeros, numerator, denominator)
 
-  trace cbor.diagnostic(new_difficulty)
-
-  trace cbor.diagnostic(new_leading_zeros)
-
   and {
     new_difficulty >= 4096,
     new_difficulty <= 65535,
-    new_leading_zeros <= 62,
+    new_leading_zeros <= 60,
     new_leading_zeros >= 2,
   }
 }
@@ -793,8 +818,35 @@ test interlink_4() {
   ]
 }
 
-test interlink_5(i via get_bytes()) {
+test interlink_5(i via get_bytes_and_difficulty()) {
   let (bytes, difficulty_number, leading_zeros) = i
 
-  todo
+  let x = difficulty_number * math.pow2(4 * ( 64 - leading_zeros - 4 ))
+
+  let (found_difficulty_number, found_leading_zeros) =
+    format_found_bytearray(bytes)
+
+  let y =
+    interlink_create(bytes, x, builtin.bytearray_to_integer(True, bytes), [])
+
+  // label(
+  //   builtin.append_string(
+  //     builtin.append_string(
+  //       builtin.append_string(@"Bytes :", bytearray.to_hex(bytes)),
+  //       builtin.append_string(
+  //         @"\n Difficulty Real number: ",
+  //         string.from_int(x),
+  //       ),
+  //     ),
+  //     cbor.diagnostic(y),
+  //   ),
+  // )
+  y == calculate_interlink(
+    [],
+    bytes,
+    found_leading_zeros,
+    found_difficulty_number,
+    difficulty_number,
+    leading_zeros,
+  )
 }
