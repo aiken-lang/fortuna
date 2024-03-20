@@ -1,12 +1,7 @@
 use aiken/builtin
-use aiken/bytearray
-use aiken/cbor
-use aiken/fuzz.{
-  and_then, bytearray_between, int_at_least, int_between, label, map,
-}
+use aiken/fuzz.{and_then, bytearray_between, int_at_least, int_between, map}
 use aiken/math
 use aiken/math/rational
-use aiken/string
 use fortuna.{
   calculate_interlink, format_found_bytearray, get_difficulty_adjustment,
   get_new_difficulty,
