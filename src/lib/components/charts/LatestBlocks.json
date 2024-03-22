@@ -1,0 +1,74 @@
+[
+  {
+    "blockEpoch": 1,
+    "blockTime": "2024-03-21T21:20:00.000Z",
+    "blockHash": "0000000000000366e8bdd0fe504d56c00f0fd7fd29f843ed2c69eeeb754a77acf",
+    "blockNumber": "30511",
+    "isPool": false,
+    "poolTicker": "",
+    "miner": "addr1qxp4r7hlkrj793zpx54e5qxjs038r5qs75pqjh36faa7kyfhl29n3qe2q9r42luwlvmnnn9japl5hwwv8avx4lp43kfs2e80s2",
+    "minted": "50",
+    "mintTx": "d2ab08bd97a10970f0ecadd60f4b6c80bc86caeb901454064b2ec8f566b87eaa",
+    "leadingZero": "12"
+  },
+  {
+    "blockEpoch": 1,
+    "blockTime": "2024-03-21T21:17:00.000Z",
+    "blockHash": "0000000000000366e8bdd0fe504d56c00f0fd7fd29f843ed2c69eeeb754a77acf",
+    "blockNumber": "30510",
+    "isPool": false,
+    "poolTicker": "",
+    "miner": "addr1qxp4r7hlkrj793zpx54e5qxjs038r5qs75pqjh36faa7kyfhl29n3qe2q9r42luwlvmnnn9japl5hwwv8avx4lp43kfs2e80s2",
+    "minted": "50",
+    "mintTx": "d2ab08bd97a10970f0ecadd60f4b6c80bc86caeb901454064b2ec8f566b87eaa",
+    "leadingZero": "12"
+  },
+  {
+    "blockEpoch": 2,
+    "blockTime": "2024-03-21T21:12:00.000Z",
+    "blockHash": "0000000000000366e8bdd0fe504d56c00f0fd7fd29f843ed2c69eeeb754a77acf",
+    "blockNumber": "30509",
+    "isPool": true,
+    "poolTicker": "BERRY",
+    "miner": "minerpools1qxp4r7hlkrj793zpx54e5qxjs038r5qs75pqjh36faa7kyfhl29n3qe2q9r42luwlvmnnn9japl5hwwv8avx4lp43kfs2e80s2",
+    "minted": "50",
+    "mintTx": "d2ab08bd97a10970f0ecadd60f4b6c80bc86caeb901454064b2ec8f566b87eaa",
+    "leadingZero": "12"
+  },
+  {
+    "blockEpoch": 2,
+    "blockTime": "2024-03-21T21:08:00.000Z",
+    "blockHash": "0000000000000366e8bdd0fe504d56c00f0fd7fd29f843ed2c69eeeb754a77acf",
+    "blockNumber": "30508",
+    "isPool": true,
+    "poolTicker": "TXPIPE",
+    "miner": "minerpools2qxp4r7hlkrj793zpx54e5qxjs038r5qs75pqjh36faa7kyfhl29n3qe2q9r42luwlvmnnn9japl5hwwv8avx4lp43kfs2e80s2",
+    "minted": "50",
+    "mintTx": "d2ab08bd97a10970f0ecadd60f4b6c80bc86caeb901454064b2ec8f566b87eaa",
+    "leadingZero": "12"
+  },
+  {
+    "blockEpoch": 3,
+    "blockTime": "2024-03-21T20:49:00.000Z",
+    "blockHash": "0000000000000366e8bdd0fe504d56c00f0fd7fd29f843ed2c69eeeb754a77acf",
+    "blockNumber": "30507",
+    "isPool": false,
+    "poolTicker": "",
+    "miner": "addr2qxp4r7hlkrj793zpx54e5qxjs038r5qs75pqjh36faa7kyfhl29n3qe2q9r42luwlvmnnn9japl5hwwv8avx4lp43kfs2e80s2",
+    "minted": "50",
+    "mintTx": "d2ab08bd97a10970f0ecadd60f4b6c80bc86caeb901454064b2ec8f566b87eaa",
+    "leadingZero": "12"
+  },
+  {
+    "blockEpoch": 3,
+    "blockTime": "2024-03-20T21:17:00.000Z",
+    "blockHash": "0000000000000366e8bdd0fe504d56c00f0fd7fd29f843ed2c69eeeb754a77acf",
+    "blockNumber": "30506",
+    "isPool": false,
+    "poolTicker": "",
+    "miner": "addr3qxp4r7hlkrj793zpx54e5qxjs038r5qs75pqjh36faa7kyfhl29n3qe2q9r42luwlvmnnn9japl5hwwv8avx4lp43kfs2e80s2",
+    "minted": "50",
+    "mintTx": "d2ab08bd97a10970f0ecadd60f4b6c80bc86caeb901454064b2ec8f566b87eaa",
+    "leadingZero": "12"
+  }
+]

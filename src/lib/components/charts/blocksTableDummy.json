@@ -1,0 +1,222 @@
+[
+  {
+    "epoch": 16,
+    "epoch_time": 2209427000,
+    "hash": "000000000000366e8bdd0fe504d56c00f0fd7fd29f843ed2c69eeeb754a77acf",
+    "leading_zeroes": 12,
+    "miner": "addr1qxkfa72n96yjrday5w43e9xkepkl96cwl9w9xy4k4qlvq3vhdh8cw6076wff7vexmhv6g52f9y3ze0jm7xkr47sare6spzf6sq",
+    "number": 30511,
+    "posix_time": 1696729079000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 1628582000,
+    "hash": "00000000000026859270f6bad2c5954dc18973c0ec7973b126d20108f3c22d12",
+    "leading_zeroes": 12,
+    "miner": "addr1qxwy40ks6y99fl3lgjw68k4wzgnjnvmmw59d0ewh4q4eukkzv2q6yzh4yvhed9msh8a3k3ntfx767f8lm4vf6ecyp2mqjrd04u",
+    "number": 30510,
+    "posix_time": 1696148234000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 1521228000,
+    "hash": "0000000000003145c8dedf42f9d481677cce3e38b94ecbb120690e1bcbe76ee1",
+    "leading_zeroes": 12,
+    "miner": "addr1qxkfa72n96yjrday5w43e9xkepkl96cwl9w9xy4k4qlvq3vhdh8cw6076wff7vexmhv6g52f9y3ze0jm7xkr47sare6spzf6sq",
+    "number": 30509,
+    "posix_time": 1696040880000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 1382715000,
+    "hash": "00000000000006a92c1ce73f828832c8dea4d57984ef294da5b3741a43f1330c",
+    "leading_zeroes": 12,
+    "miner": "addr1qxwy40ks6y99fl3lgjw68k4wzgnjnvmmw59d0ewh4q4eukkzv2q6yzh4yvhed9msh8a3k3ntfx767f8lm4vf6ecyp2mqjrd04u",
+    "number": 30508,
+    "posix_time": 1695902367000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 794582000,
+    "hash": "00000000000012b8ddd93b91d2eda215be8d9c4d34ede0d8f4ab5f320eb45c23",
+    "leading_zeroes": 12,
+    "miner": "addr1vxmhma4tw240lwgc7wypuqcfn0kj644adtrgkx8uhp57rqgna36vl",
+    "number": 30507,
+    "posix_time": 1695314234000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 541172000,
+    "hash": "0000000000000085c05a70139a2864266aa830bd6a31a05e89a3efddde5aecfc",
+    "leading_zeroes": 12,
+    "miner": "addr1qxcnt8d0rq5twz4fy59zlg2jkuwrnuy2pcgdjq4pffv0dzl6jhy3sfyke43dwn3zfsln7lk3n9mgwpdyfx5jzaavtffq6cxyl8",
+    "number": 30506,
+    "posix_time": 1695060824000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 477941000,
+    "hash": "0000000000000850831c07b0a389aca539c1098d415420618e5ea5347f19127c",
+    "leading_zeroes": 12,
+    "miner": "addr1vxmhma4tw240lwgc7wypuqcfn0kj644adtrgkx8uhp57rqgna36vl",
+    "number": 30505,
+    "posix_time": 1694997593000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 194497000,
+    "hash": "00000000000036d532531c75cdad92a6d7264c1bdcc0ebfdc5705f0ebb2cb9d0",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30504,
+    "posix_time": 1694714149000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 193680000,
+    "hash": "00000000000016d86eac65539b37b6b0eec7adb6b81a81eb728e74741f972b5a",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30503,
+    "posix_time": 1694713332000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 192042000,
+    "hash": "0000000000002e6b715be23d13a261cedf4e9f034fa32cf3911bb1fe9d4614de",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30502,
+    "posix_time": 1694711694000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 175199000,
+    "hash": "000000000000080f05c1eb5fa95df74c39faff350a115860f57566c9a85b448f",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30501,
+    "posix_time": 1694694851000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 166764000,
+    "hash": "00000000000011672f3b83190ca0d109857049377a427a8752becfef0c59f7c6",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30500,
+    "posix_time": 1694686416000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 163727000,
+    "hash": "000000000000386e423418f2f0b9765e375d4e8d59829c17de2afc7b34380015",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30499,
+    "posix_time": 1694683379000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 159755000,
+    "hash": "000000000000317a9752983ec3c47d8b0651aed8cae2cd32a645bbba40f2a2a1",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30498,
+    "posix_time": 1694679407000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 158003000,
+    "hash": "00000000000027b348d00bb8157ea56d0f91bc08bc2bed90e3925a957c721b73",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30497,
+    "posix_time": 1694677655000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 157328000,
+    "hash": "000000000000388de22650bd7710fc3917fba16c79061bf4954fda2cd6e74002",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30496,
+    "posix_time": 1694676980000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 157274000,
+    "hash": "0000000000000f070bcd5d533552a10c3e106adc7e94e05adabe10ffab259644",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30495,
+    "posix_time": 1694676926000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 157025000,
+    "hash": "0000000000002e4df250a7cb2224565d91d728f0fc4219ff43f54190af340cbe",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30494,
+    "posix_time": 1694676677000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 156936000,
+    "hash": "00000000000019c2ab84b971f6ead9c939b8fb0845ea8cdd10961012fa342672",
+    "leading_zeroes": 12,
+    "miner": "addr1qxjjexpv2z2p5ypnpa9zr9trgkd8yyrjlwkkdvcaq6mdsuex0vr0jgtnskj38x9x56xkhz0cpe225xalz5wa74nwkx8qr9l0zp",
+    "number": 30493,
+    "posix_time": 1694676588000,
+    "rewards": 5000000000,
+    "target": 16383
+  },
+  {
+    "epoch": 16,
+    "epoch_time": 156483000,
+    "hash": "00000000000009291521a30da723333db979070fa9c7e35ac06120396ef573ca",
+    "leading_zeroes": 12,
+    "miner": "addr1qx4dk88a8vhuv8p9nunalkyhxf4luv2q9kxxg7paa5ucvxtdjdzznqqqxy0wsndl8p5uwq3trg6ym0e5pvqzgl3hmjvswhyqrj",
+    "number": 30492,
+    "posix_time": 1694676135000,
+    "rewards": 5000000000,
+    "target": 16383
+  }
+]

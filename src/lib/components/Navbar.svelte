@@ -64,7 +64,6 @@
             ></svg
           ></a>
       </div>
-
       <ConnectButton />
     </div>
   </div>
